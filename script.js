@@ -50,17 +50,81 @@ function handleMenuBtn() {
     const links = document.querySelectorAll("#catalogue a");
 
     // 點擊漢堡按鈕時顯示或隱藏菜單
-    menuBtn.addEventListener("click", function () {
-        catalogue.classList.toggle("show");
+    menuBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (catalogue.classList.contains("show")) {
+            // 隱藏菜單
+            catalogue.classList.remove("show");
+            menuBtn.classList.remove("active");
+            setTimeout(() => {
+                catalogue.style.display = "none";
+            }, 300);
+        } else {
+            // 顯示菜單
+            catalogue.style.display = "block";
+            setTimeout(() => {
+                catalogue.classList.add("show");
+                menuBtn.classList.add("active");
+            }, 10);
+        }
     });
+
+    function hideMenu() {
+        catalogue.classList.remove("show");
+        menuBtn.classList.remove("active");
+        setTimeout(() => {
+            // Only set display: none on mobile screens
+            if (window.innerWidth <= 1080) {
+                catalogue.style.display = "none";
+            }
+        }, 300);
+    }
 
     // 點擊菜單中的鏈接時，隱藏菜單
     links.forEach(link => {
         link.addEventListener("click", function () {
-            catalogue.classList.remove("show");
+            hideMenu();
         });
     });
-    apiDoc.addEventListener("click", () => catalogue.classList.remove("show"));
+
+    // 點擊文檔內容區域時隱藏菜單
+    apiDoc.addEventListener("click", () => {
+        hideMenu();
+    });
+
+    // 點擊菜單本身不會關閉菜單
+    catalogue.addEventListener("click", function (e) {
+        e.stopPropagation();
+    });
+
+    // 點擊文檔外部任何地方都會關閉菜單
+    document.addEventListener("click", function (e) {
+        if (!catalogue.contains(e.target) && !menuBtn.contains(e.target)) {
+            hideMenu();
+        }
+    });
+
+    // ESC 鍵關閉菜單
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+            hideMenu();
+        }
+    });
+
+    // Handle window resize to manage display property
+    window.addEventListener("resize", function() {
+        if (window.innerWidth > 1080) {
+            // Desktop: remove any inline display style to let CSS take over
+            catalogue.style.display = "";
+            catalogue.classList.remove("show");
+            menuBtn.classList.remove("active");
+        } else {
+            // Mobile: ensure proper state
+            if (!catalogue.classList.contains("show")) {
+                catalogue.style.display = "none";
+            }
+        }
+    });
 }
 
 function getNearestSectionHighlight() {
@@ -82,24 +146,43 @@ function getNearestSectionHighlight() {
 
     for (let i = 0; i < apiLinks.length; i++) {
         if (nearestIndex === i) {
+            apiLinks[i].classList.add('active');
             if (mediaQuery.matches) {
                 apiLinks[i].style.color = highlightColorDark;
+                apiLinks[i].style.borderLeftColor = highlightColorDark;
+                apiLinks[i].style.backgroundColor = 'rgba(252, 194, 32, 0.15)';
             } else {
                 apiLinks[i].style.color = '#3ABEF9';
+                apiLinks[i].style.borderLeftColor = '#3ABEF9';
+                apiLinks[i].style.backgroundColor = 'rgba(58, 190, 249, 0.1)';
             }
             
+            // Auto-scroll to keep active item visible in sidebar
+            const activeLink = apiLinks[i];
+            const catalogueRect = catalogue.getBoundingClientRect();
+            const linkRect = activeLink.getBoundingClientRect();
+            
+            // Check if the active link is outside the visible area of catalogue
+            if (linkRect.top < catalogueRect.top || linkRect.bottom > catalogueRect.bottom) {
+                activeLink.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                    inline: 'nearest'
+                });
+            }
         } else {
+            apiLinks[i].classList.remove('active');
             if (mediaQuery.matches) {
                 apiLinks[i].style.color = 'white';
+                apiLinks[i].style.backgroundColor = 'transparent';
+                apiLinks[i].style.borderLeft = 'none';
             } else {
                 apiLinks[i].style.color = 'black';
+                apiLinks[i].style.backgroundColor = 'transparent';
+                apiLinks[i].style.borderLeft = 'none';
             }
         }
     }
-
-
-
-    // return nearestSection;
 }
 
 function loadPage(apiData) {

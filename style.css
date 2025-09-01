@@ -29,6 +29,13 @@ header {
 #title {
     padding: 0;
     display: inline-block;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#title:hover {
+    color: #3ABEF9;
+    transform: scale(1.05);
 }
 
 main {
@@ -58,6 +65,11 @@ main {
 
 .category-title {
     font-size: 30px;
+    transition: color 0.3s ease;
+}
+
+.category-title:hover {
+    color: #3ABEF9;
 }
 
 #api-doc .category-title {
@@ -74,6 +86,12 @@ main {
 .api-title {
     font-size: 20px;
     font-weight: bold;
+    transition: color 0.3s ease;
+    cursor: pointer;
+}
+
+.api-title:hover {
+    color: #3ABEF9;
 }
 
 .api-link {
@@ -81,11 +99,23 @@ main {
     line-height: 30px;
     color: black;
     text-decoration: none;
-    padding-left: 20px;
+    padding: 5px 20px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    display: block;
+    margin: 2px 0;
 }
 
 .api-link:hover {
     text-decoration: underline;
+    background-color: rgba(0, 0, 0, 0.05);
+    transform: translateX(5px);
+}
+
+.api-link.active {
+    font-weight: bold;
+    border-left: 3px solid #3ABEF9;
+    background-color: rgba(58, 190, 249, 0.1);
 }
 
 #catalogue ul {
@@ -114,6 +144,13 @@ pre {
     font-size: 14px;
     font-family: "Source Code Pro", 'Courier New', monospace;
     overflow-x: auto;
+    transition: all 0.3s ease;
+    cursor: text;
+}
+
+pre:hover {
+    background-color: #e8e8e8;
+    transform: scale(1.01);
 }
 
 img {
@@ -130,22 +167,69 @@ img {
         position: fixed;
         top: 55px; /* header 高度 */
         left: 0;
-        width: 100%;
+        width: min(250px, 60vw);
         background-color: white;
         z-index: 1000;
         height: calc(100vh - 70px);
         overflow-y: auto;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-out;
     }
 
     /* 為 header 添加漢堡選單按鈕 */
-    #menuBtn::before {
-        content: '\2630'; /* 漢堡圖標 */
-        font-size: 40px;
+    #menuBtn {
         position: fixed;
-        top: 5px;
-        left: 30px;
+        top: 30px;
+        left: 20px;
         cursor: pointer;
         display: block;
+        width: 24px;
+        height: 24px;
+        z-index: 1001;
+        transition: all 0.3s ease;
+    }
+
+    /* 漢堡線條 */
+    #menuBtn span,
+    #menuBtn span:before,
+    #menuBtn span:after {
+        display: block;
+        width: 24px;
+        height: 2px;
+        background-color: currentColor;
+        border-radius: 1px;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    #menuBtn span:before,
+    #menuBtn span:after {
+        content: '';
+        position: absolute;
+        left: 0;
+    }
+
+    #menuBtn span:before {
+        top: -6px;
+    }
+
+    #menuBtn span:after {
+        bottom: -6px;
+    }
+
+    /* 轉換為叉叉的動畫 */
+    #menuBtn.active span {
+        background-color: transparent;
+    }
+
+    #menuBtn.active span:before {
+        transform: rotate(45deg);
+        top: 0;
+    }
+
+    #menuBtn.active span:after {
+        transform: rotate(-45deg);
+        bottom: 0;
     }
 
     #api-doc {
@@ -154,8 +238,7 @@ img {
 
     /* 顯示菜單時將其置於 api-doc 之上 */
     #catalogue.show {
-        display: block;
-        width: min(250px, 60vw);
+        transform: translateX(0);
     }
 }
 
@@ -196,6 +279,30 @@ img {
     #catalogue::-webkit-scrollbar-thumb, #api-doc::-webkit-scrollbar-thumb {
         background-color: darkgray;
         border-radius: 10px;
+    }
+
+    /* 深色模式下的懸停效果 */
+    @media (prefers-color-scheme: dark) {
+        #title:hover {
+            color: #fcc220;
+        }
+        
+        .category-title:hover {
+            color: #fcc220;
+        }
+        
+        .api-title:hover {
+            color: #fcc220;
+        }
+        
+        .api-link:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        pre:hover {
+            background-color: #2a2a2a;
+        }
+        
     }
 
 }
