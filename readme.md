@@ -1,8 +1,8 @@
 # Pixel Weather Backend API Documentation
 
-Read the documentation clicking [here](https://hiufungleung.github.io/pixelweather).
+Read the documentation clicking [here](https://hiufungleung.github.io/pixelweather-api).
 <p>Or copy link to browser:</p>
-<p>https://hiufungleung.github.io/pixelweather</p>
+<p>https://hiufungleung.github.io/pixelweather-api</p>
 
 ## Database structure
 
