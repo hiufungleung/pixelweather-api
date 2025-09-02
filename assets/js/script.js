@@ -306,7 +306,7 @@ function applyColorScheme(event) {
         document.body.style.color = darkFontColor;
         document.querySelectorAll('pre').forEach(item => { item.style.backgroundColor = '#202020'; });
         document.querySelectorAll('.api-link').forEach(item => { item.style.color = darkFontColor; });
-        erd.setAttribute('src', 'db_structure_dark.svg');
+        erd.setAttribute('src', 'assets/images/db_structure_dark.svg');
 
         catalogue.style.backgroundColor = darkBackgroundColor;
         document.querySelector('header').style.backgroundColor = darkBackgroundColor;
@@ -316,7 +316,7 @@ function applyColorScheme(event) {
         document.body.style.color = 'black';
         document.querySelectorAll('pre').forEach(item => { item.style.backgroundColor = '#eeeeee'; });
         document.querySelectorAll('.api-link').forEach(item => { item.style.color = '#444'; });
-        erd.setAttribute('src', 'db_structure.svg');
+        erd.setAttribute('src', 'assets/images/db_structure.svg');
 
         catalogue.style.backgroundColor = lightBackgroundColor;
         document.querySelector('header').style.backgroundColor = lightBackgroundColor;
